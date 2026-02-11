@@ -44,3 +44,9 @@ Networking relies on protocols which are rules that control how data is transmit
 
 ### The TCP/IP Model:
 
+
+---
+# References
+https://www.geeksforgeeks.org/computer-networks/introduction-to-subnetting/
+https://medium.com/infosecmatrix/what-is-networking-an-introduction-to-basic-networking-concepts-42fdb9c02a20
+https://www.techtarget.com/searchnetworking/tip/Introduction-to-IP-addressing-and-subnetting
