@@ -43,7 +43,7 @@ The OSI(Open System Interconnection) is an 7 layer framework that standerdizes h
 
 ### The OSI Model:
 1. Physical Layer: Deals with the physical medium of communication, such as ethernet cables and wifi signals.
-2. Data Link Layer: Handle data transfer between directly connected devices and error detection.
+2. Data Link Layer: Handle data transfer between directly connected devices and error detection. 
 3. Network Layer: Responsible for routing data packets between devices. Here the ip addressing occurs.
 4. Transport Layer: Ensures reliable data transfer, often using TCP for error correction.
 5. Session Layer: Manages sessions between application.
@@ -68,3 +68,5 @@ When you send a message, such as an email or a web request, the data follows a s
 1. [Introduction to Subnetting](https://www.geeksforgeeks.org/computer-networks/introduction-to-subnetting/)
 2. [Introduction to basic networking](https://medium.com/infosecmatrix/what-is-networking-an-introduction-to-basic-networking-concepts-42fdb9c02a20)
 3. [Introduction to Ip-addressing and Subnetting](https://www.techtarget.com/searchnetworking/tip/Introduction-to-IP-addressing-and-subnetting)
+4. [Free CCNA 200-301 youtube](https://www.youtube.com/playlist?list=PLIhvC56v63IJVXv0GJcl9vO5Z6znCVb1P)
+Fahim Abdullah
