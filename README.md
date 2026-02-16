@@ -39,14 +39,32 @@ Networking relies on protocols which are rules that control how data is transmit
 3. FTP (File Transfer Protocol): Used for transferring files between a client and server on a network.
 
 ## The OSI and TCP/IP Models
+The OSI(Open System Interconnection) is an 7 layer framework that standerdizes how data is transmitted over the network. The TCP/IP (Tranmission Control Protocol/Internet Protocol) is 4 layer framework that is more practical and widly used today for internet communication.
 
 ### The OSI Model:
+1. Physical Layer: Deals with the physical medium of communication, such as ethernet cables and wifi signals.
+2. Data Link Layer: Handle data transfer between directly connected devices and error detection.
+3. Network Layer: Responsible for routing data packets between devices. Here the ip addressing occurs.
+4. Transport Layer: Ensures reliable data transfer, often using TCP for error correction.
+5. Session Layer: Manages sessions between application.
+6. Presentation Layer: Converts data into a format that can be used by the application layer (data encoding, encryption).
+7. Application Layer: The top layer where user applications interact with the network (e.g., web browsers, email clients).
 
 ### The TCP/IP Model:
+1. Network Interface Layer: Combines the physical and data link layers of OSI.
+2. Internet Layer: Manages logical addressing and routing (equivalent to the network layer in OSI).
+3. Transport Layer: Ensures reliable data transfer.
+4. Application Layer: Includes all protocols that users interact with, such as HTTPS, FTP, and SMTP.
 
+### How data flows through a network
+When you send a message, such as an email or a web request, the data follows a specific path through the network, passing through the OSI or TCP/IP layers:
+
+1. Encapsulation: The data is broken down into smaller packets and passed through each layer of the OSI or TCP/IP model, where each layer adds its own header information.
+2. Transmission: The data is transmitted over the physical network (e.g., Ethernet, Wi-Fi) to the destination device.
+3. Decapsulation: On the receiving end, each layer removes its corresponding header as the data moves back up the model until the original message is reconstructed and delivered to the intended application.
 
 ---
 # References
-https://www.geeksforgeeks.org/computer-networks/introduction-to-subnetting/
-https://medium.com/infosecmatrix/what-is-networking-an-introduction-to-basic-networking-concepts-42fdb9c02a20
-https://www.techtarget.com/searchnetworking/tip/Introduction-to-IP-addressing-and-subnetting
+1. [Introduction to Subnetting](https://www.geeksforgeeks.org/computer-networks/introduction-to-subnetting/)
+2. [Introduction to basic networking](https://medium.com/infosecmatrix/what-is-networking-an-introduction-to-basic-networking-concepts-42fdb9c02a20)
+3. [Introduction to Ip-addressing and Subnetting](https://www.techtarget.com/searchnetworking/tip/Introduction-to-IP-addressing-and-subnetting)
