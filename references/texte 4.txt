@@ -1,0 +1,178 @@
+Great question — this is one of the most important mental models in networking, and confusion here is completely normal. Let’s build it slowly, like a good C program: one concept at a time, no magic jumps 😊
+
+⸻
+
+1️⃣ First: what a subnet mask really means
+
+An IPv4 address has 32 bits, split into 4 bytes (octets):
+
+192 . 168 . 82 . 222
+
+A subnet mask tells us:
+
+Which bits belong to the network
+Which bits belong to the hosts
+
+Your mask is:
+
+255.255.255.224
+
+Let’s convert only the last octet to binary (this is the key):
+
+224 = 11100000
+
+So the full mask ends with:
+
+11100000
+
+Interpretation
+	•	1 bits → network bits
+	•	0 bits → host bits
+
+11100000
+^^^-----
+3 bits  5 bits
+
+👉 That means:
+	•	3 bits for subnetting
+	•	5 bits for hosts
+
+⸻
+
+2️⃣ How many IPs per subnet?
+
+Host bits = 5
+
+2⁵ = 32 IP addresses per subnet
+
+⚠️ Important:
+	•	1 IP = network address (not usable)
+	•	1 IP = broadcast address (not usable)
+
+So:
+
+32 - 2 = 30 usable host IPs
+
+
+⸻
+
+3️⃣ Why people talk about “blocks of 32”
+
+Here’s the magic rule (but we’ll explain it logically):
+
+Block size = 256 - subnet_mask_octet
+
+For you:
+
+256 - 224 = 32
+
+So the last octet increases by 32 each subnet.
+
+That means subnet boundaries are:
+
+0, 32, 64, 96, 128, 160, 192, 224
+
+⚠️ These are NETWORK ADDRESSES, not usable hosts.
+
+⸻
+
+4️⃣ Let’s build the full ranges (this is the big “aha”)
+
+Assume your network is:
+
+192.168.82.X
+
+Now let’s list the subnets:
+
+Subnet	Network	Usable Start	Usable End	Broadcast
+1	192.168.82.0	192.168.82.1	192.168.82.30	192.168.82.31
+2	192.168.82.32	192.168.82.33	192.168.82.62	192.168.82.63
+3	192.168.82.64	192.168.82.65	192.168.82.94	192.168.82.95
+4	192.168.82.96	192.168.82.97	192.168.82.126	192.168.82.127
+5	192.168.82.128	192.168.82.129	192.168.82.158	192.168.82.159
+6	192.168.82.160	192.168.82.161	192.168.82.190	192.168.82.191
+7	192.168.82.192	192.168.82.193	192.168.82.222	192.168.82.223
+8	192.168.82.224	192.168.82.225	192.168.82.254	192.168.82.255
+
+
+⸻
+
+5️⃣ Now your exact question: what about 192.168.82.222?
+
+Let’s analyze it like a debugger 🧠
+
+222 belongs to which block?
+
+192 ≤ 222 ≤ 223
+
+So it is inside this subnet:
+
+Network:   192.168.82.192
+Broadcast: 192.168.82.223
+
+Is 222 allowed?
+
+✅ YES
+Because usable range is:
+
+192.168.82.193 → 192.168.82.222
+
+Can it “go up to 224”?
+
+❌ NO — and here’s why:
+
+224 is the NEXT NETWORK ADDRESS
+
+192.168.82.224  ← new subnet starts here
+
+So:
+	•	.223 → broadcast (last IP of previous subnet)
+	•	.224 → network address (first IP of next subnet)
+
+Both are not usable as host IPs.
+
+⸻
+
+6️⃣ The mental rule (this will save you in exams & real life)
+
+When mask is 255.255.255.224:
+	•	Subnets jump by 32
+	•	Each subnet:
+	•	First IP → network
+	•	Last IP → broadcast
+	•	Everything in between → usable
+
+So NO, it is not “1 to 224”
+It is multiple ranges of 32, repeated.
+
+⸻
+
+7️⃣ Think like a C programmer 💡
+
+Imagine this loop:
+
+for (int subnet = 0; subnet < 256; subnet += 32)
+{
+    network = subnet;
+    broadcast = subnet + 31;
+    usable = subnet + 1 → subnet + 30;
+}
+
+That’s exactly what the subnet mask is doing.
+
+⸻
+
+8️⃣ Final takeaway (very important)
+	•	255.255.255.224 ≠ “max IP is 224”
+	•	224 defines how IP space is sliced
+	•	192.168.82.222 is valid
+	•	192.168.82.224 is not a host
+
+You’re asking the right kind of questions — this confusion is a sign you’re learning deeply 👍
+
+If you want next:
+	•	CIDR notation (/27)
+	•	How routers decide if two IPs are in the same subnet
+	•	Or how this appears in real Linux networking
+
+Just tell me 👌

@@ -1,0 +1,148 @@
+
+⸻
+
+🧠 1. First: What are we trying to find?
+
+When you calculate a subnet range, you want 4 things:
+	1.	Network address (start of the subnet)
+	2.	First usable IP
+	3.	Last usable IP
+	4.	Broadcast address (end of the subnet)
+
+⸻
+
+🔢 2. Example (we go slowly)
+
+Let’s take:
+
+IP address:     192.168.1.130
+Subnet mask:    255.255.255.192
+
+
+⸻
+
+🧩 3. Understand the subnet mask
+
+Convert the important part:
+
+255.255.255.192
+
+Only the last number matters → 192
+
+Now learn this trick:
+
+👉 Convert 192 into “block size”
+
+Block size = 256 - subnet value
+           = 256 - 192
+           = 64
+
+✔️ This 64 is the key — it tells you how the ranges jump.
+
+⸻
+
+📦 4. Build the subnet ranges
+
+Start from 0 and add 64:
+
+0
+64
+128
+192
+256 (stop here)
+
+So your subnets are:
+
+192.168.1.0   → 192.168.1.63
+192.168.1.64  → 192.168.1.127
+192.168.1.128 → 192.168.1.191
+192.168.1.192 → 192.168.1.255
+
+
+⸻
+
+🎯 5. Find where your IP belongs
+
+Your IP is:
+
+192.168.1.130
+
+Look at the ranges:
+	•	128 → 191 ✅ ← this one contains 130
+
+⸻
+
+📍 6. Now extract everything
+
+From:
+
+192.168.1.128 → 192.168.1.191
+
+✳️ Network address
+
+👉 First number:
+
+192.168.1.128
+
+✳️ Broadcast address
+
+👉 Last number:
+
+192.168.1.191
+
+✳️ Usable range
+
+👉 Between them:
+
+First usable: 192.168.1.129
+Last usable:  192.168.1.190
+
+
+⸻
+
+⚠️ 7. Important rule (always remember)
+
+Type	Can be used?
+Network address	❌ No
+Broadcast address	❌ No
+Others	✅ Yes
+
+
+⸻
+
+🧠 8. The mental shortcut (very important)
+
+Whenever you see a subnet mask:
+
+Step 1
+
+256 - last number
+
+Step 2
+
+→ Count in jumps
+
+Step 3
+
+→ Find where your IP fits
+
+Step 4
+
+→ Extract:
+	•	Start = network
+	•	End = broadcast
+	•	Middle = usable
+
+⸻
+
+🔥 Let’s test your understanding
+
+Try this yourself:
+
+IP: 192.168.1.70
+Mask: 255.255.255.224
+
+👉 First question:
+What is the block size?
+
+Don’t jump ahead — answer just this, and I’ll guide you step by step like a pro.

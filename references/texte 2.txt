@@ -1,0 +1,154 @@
+Let’s decode what this IP address + subnet mask combination really means step-by-step.
+
+You have:
+	•	IP address: 198.168.85.222
+	•	Subnet mask: 255.255.255.224
+
+The subnet mask tells us how the network is divided.
+
+⸻
+
+1️⃣ Convert the subnet mask to binary
+
+Subnet masks are easier to understand in binary.
+
+255 = 11111111
+255 = 11111111
+255 = 11111111
+224 = 11100000
+
+So the mask becomes:
+
+11111111.11111111.11111111.11100000
+
+Now count the 1 bits:
+
+8 + 8 + 8 + 3 = 27
+
+So this mask is:
+
+/27
+
+Meaning:
+	•	27 bits = network
+	•	5 bits = hosts
+
+⸻
+
+2️⃣ How many IP addresses in this subnet?
+
+The host part has 5 bits.
+
+Number of possible combinations:
+
+2^5 = 32 addresses
+
+So each subnet has 32 addresses.
+
+But remember:
+	•	1 address = network address
+	•	1 address = broadcast
+
+So usable addresses:
+
+32 - 2 = 30 usable hosts
+
+
+⸻
+
+3️⃣ Find the subnet blocks
+
+Since each subnet has 32 addresses, the last octet increases by 32.
+
+The ranges will be:
+
+0 – 31
+32 – 63
+64 – 95
+96 – 127
+128 – 159
+160 – 191
+192 – 223
+224 – 255
+
+Each one is a different subnet.
+
+⸻
+
+4️⃣ Which subnet does your IP belong to?
+
+Your IP:
+
+198.168.85.222
+
+Look at the last octet:
+
+222
+
+Find the range containing 222:
+
+192 – 223
+
+So the subnet is:
+
+198.168.85.192/27
+
+
+⸻
+
+5️⃣ Important addresses in this subnet
+
+Subnet range:
+
+198.168.85.192 – 198.168.85.223
+
+Type	Address
+Network	198.168.85.192
+First usable	198.168.85.193
+Last usable	198.168.85.222
+Broadcast	198.168.85.223
+
+Your IP:
+
+198.168.85.222
+
+This is the last usable host in this subnet.
+
+⸻
+
+6️⃣ Why 224 creates blocks of 32
+
+Look at the last octet mask:
+
+224 = 11100000
+
+Host bits:
+
+00011111
+
+Binary value:
+
+00011111 = 31
+
+Add the network bit:
+
+31 + 1 = 32
+
+So the subnet size becomes 32 addresses per subnet.
+
+⸻
+
+✅ Summary
+
+IP:            198.168.85.222
+Subnet mask:   255.255.255.224
+CIDR:          /27
+Subnet:        198.168.85.192
+Broadcast:     198.168.85.223
+Usable range:  198.168.85.193 – 198.168.85.222
+Hosts:         30
+
+
+⸻
+
+If you’re doing network exercises like in NetPractice at 42, I can also show you a super fast mental trick to find the subnet in 5 seconds without binary. It makes these questions extremely easy.

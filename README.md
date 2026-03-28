@@ -42,10 +42,10 @@ Networking relies on protocols which are rules that control how data is transmit
 The OSI(Open System Interconnection) is an 7 layer framework that standerdizes how data is transmitted over the network. The TCP/IP (Tranmission Control Protocol/Internet Protocol) is 4 layer framework that is more practical and widly used today for internet communication.
 
 ### The OSI Model:
-1. Physical Layer: Deals with the physical medium of communication, such as ethernet cables and wifi signals.
+1. Physical Layer: Deals with the physical medium of communication, such as ethernet cables and wifi signals. 
 2. Data Link Layer: Handle data transfer between directly connected devices and error detection. 
 3. Network Layer: Responsible for routing data packets between devices. Here the ip addressing occurs.
-4. Transport Layer: Ensures reliable data transfer, often using TCP for error correction.
+4. Transport Layer: Ensures reliable 192.172.250.0data transfer, often using TCP for error correction.
 5. Session Layer: Manages sessions between application.
 6. Presentation Layer: Converts data into a format that can be used by the application layer (data encoding, encryption).
 7. Application Layer: The top layer where user applications interact with the network (e.g., web browsers, email clients).
@@ -62,6 +62,42 @@ When you send a message, such as an email or a web request, the data follows a s
 1. Encapsulation: The data is broken down into smaller packets and passed through each layer of the OSI or TCP/IP model, where each layer adds its own header information.
 2. Transmission: The data is transmitted over the physical network (e.g., Ethernet, Wi-Fi) to the destination device.
 3. Decapsulation: On the receiving end, each layer removes its corresponding header as the data moves back up the model until the original message is reconstructed and delivered to the intended application.
+
+### IP Address
+An IP address contains 2 parts:
+1. Network identifier.
+2. Host Part.
+
+### Subnet Musk
+In order to identify which part of the full IP Address correspond to the
+Network and which correspond to the Host, we musk apply to it a Network
+Mask (or Subnet Mask).
+A Mask is also a 32-bit number divided into four 8-bit blocks. However, its
+purpose is to identify which bits are actively part of the Network
+identification. To do so, it marks with 1s the network bits.
+
+### 2 Ip address can never be used
+#### 1st Network Address
+This is the first ip address of the network.
+- it represent the network itself, not a device.
+- it is used by the routers to identify the network.
+
+#### 2nd the Broadcast Address
+This is the last ip of the network
+- It is used to send a message to ALL devices in the network
+- cannot assign to a single machine
+
+some note:
+A subnet (subnetwork) is just a smaller piece of a big network.
+and a subnet mask is the one tells which part of the IP is the network and which part is the devices, like a separator.
+
+example:
+if my IP is `192.172.250.0` and my subnet mask is `255.255.255.0`
+my subnet (subnetwork) is `192.172.250.0` and the mask will tell me that `192.172.250` is the part of my network part and `0` is the part of my host part.
+
+in this scenario my network address will be `192.172.250.0` 
+and my broadcast address will be `192.172.250.255` 
+
 
 ---
 # References

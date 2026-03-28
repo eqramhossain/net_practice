@@ -1,0 +1,233 @@
+Perfect — this is the right question to ask.
+You’re basically saying: “I don’t want results, I want the algorithm.”
+That mindset is exactly what will make networking feel logical, not memorized.
+
+I’ll explain how I calculated the subnet table, step by step, as if we were writing it by hand, like tracing a C program.
+
+⸻
+
+0️⃣ What we START with (inputs)
+
+We are given:
+
+Subnet mask: 255.255.255.224
+Network base: 192.168.82.X
+
+Everything comes from just those two facts.
+
+⸻
+
+1️⃣ Convert the subnet mask into something usable
+
+Focus ONLY on the last octet (this is critical).
+
+224 in binary = 11100000
+
+Now interpret it:
+	•	1 bits → network
+	•	0 bits → hosts
+
+11100000
+^^^-----
+3 bits   5 bits
+
+So we immediately know:
+	•	Host bits = 5
+	•	Total IPs per subnet = 2⁵ = 32
+
+👉 This is the size of each block.
+
+This single number (32) drives everything that follows.
+
+⸻
+
+2️⃣ Find the block size (the real engine)
+
+There are two equivalent ways (use whichever clicks faster in your brain):
+
+Method A (math shortcut)
+
+256 - 224 = 32
+
+Method B (logic)
+
+5 host bits → 2⁵ → 32 IPs
+
+✅ Same result.
+
+So now we know:
+
+“Every subnet is exactly 32 IPs wide.”
+
+⸻
+
+3️⃣ Where do subnets START?
+
+IPv4 octets go from 0 → 255.
+
+If subnets are 32 wide, then they must start at multiples of 32.
+
+So we literally count like a loop:
+
+for (int i = 0; i < 256; i += 32)
+    printf("%d\n", i);
+
+That gives:
+
+0
+32
+64
+96
+128
+160
+192
+224
+
+⚠️ These numbers are NOT random
+They are network addresses.
+
+This is how I got the first column of the table.
+
+⸻
+
+4️⃣ Build ONE subnet fully (then repeat)
+
+Let’s take one block and fully understand it.
+
+Pick subnet starting at .192
+
+We already know:
+	•	Block size = 32
+
+So:
+
+Network address = 192
+Broadcast address = 192 + 31 = 223
+
+Why +31?
+
+Because the block includes 32 values total:
+
+192 → 223   (count them: 32)
+
+
+⸻
+
+Usable host range
+
+Rules (always true):
+	•	First IP → network ❌
+	•	Last IP → broadcast ❌
+
+So:
+
+Usable start = 192 + 1 = 193
+Usable end   = 223 - 1 = 222
+
+That’s it. No guessing.
+
+⸻
+
+5️⃣ Now you can fill the entire table mechanically
+
+Once you understand one subnet, the rest is repetition.
+
+For each network start N:
+
+Network   = N
+Usable    = N+1 → N+30
+Broadcast = N+31
+
+Let’s do a few together 👇
+
+⸻
+
+Subnet starting at .0
+
+Network   = 0
+Usable    = 1 → 30
+Broadcast = 31
+
+
+⸻
+
+Subnet starting at .32
+
+Network   = 32
+Usable    = 33 → 62
+Broadcast = 63
+
+
+⸻
+
+Subnet starting at .64
+
+Network   = 64
+Usable    = 65 → 94
+Broadcast = 95
+
+And so on…
+Same math. No new thinking required.
+
+⸻
+
+6️⃣ Why this works EVERY time (important intuition)
+
+The subnet mask forces alignment.
+
+You are not choosing these numbers — the mask forces them.
+
+In binary:
+
+Subnet mask: 11100000
+
+That means:
+	•	Last 5 bits are host bits
+	•	Host bits count from 00000 → 11111 (0 → 31)
+
+So every subnet must reset every 32 values.
+
+⸻
+
+7️⃣ Think like a systems programmer 🧠
+
+This is identical to memory alignment:
+
+// 32-byte aligned blocks
+address & ~31;
+
+Subnetting is bit masking, nothing more.
+
+Routers do this:
+
+IP & MASK = NETWORK
+
+You just did it manually.
+
+⸻
+
+8️⃣ Final algorithm (memorize this, not the table)
+
+When given a subnet mask:
+	1.	Look at the last non-255 octet
+	2.	Compute block size
+→ 256 - mask_octet
+	3.	Count subnets using that step
+	4.	For each subnet:
+	•	Network = start
+	•	Broadcast = start + block_size - 1
+	•	Usable = between them
+
+If you follow this, you can rebuild any subnet table from scratch.
+
+⸻
+
+You’re doing exactly what a good low-level engineer does:
+refusing to memorize, insisting on understanding.
+
+Next, if you want, we can:
+	•	Do this without any math
+	•	Practice subnetting in your head
+	•	Or flip roles and let you calculate one while I guide you 😉
+
+Just tell me.
