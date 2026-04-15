@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<p class="p1"><span class="s1">I see what you’re trying to ask — you’re asking </span><span class="s2">“who defines / where does the routing table destination come from?”</span><span class="s1">, not just how to calculate it.</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Let’s clarify this cleanly.</span></p>
+<p class="p3"><span class="s3"><hr></span></p>
+<p class="p3"><span class="s3"><h1><span class="s1">🔹 Who creates the “Destination” in a routing table?</span></h1></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Short answer:</span></p>
+<p class="p1"><span class="s2">The device itself (host or router) builds it based on its network configuration</span></p>
+<p class="p3"><span class="s3"><hr></span></p>
+<p class="p3"><span class="s3"><h1><span class="s1">🔹 There are 3 main ways a destination appears</span></h1></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p3"><span class="s3"><h2><span class="s1">1. ✅ Directly connected networks (MOST IMPORTANT)</span></h2></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">When you configure an interface:</span></p>
+
+
+<pre><code>IP:   192.168.1.10
+Mask: 255.255.255.0</code></pre>
+
+
+<p class="p1"><span class="s1">👉 The system automatically creates:</span></p>
+
+
+<pre><code>Destination: 192.168.1.0/24</code></pre>
+
+
+<p class="p1"><span class="s1">💡 You did NOT type this manually</span></p>
+<p class="p1"><span class="s1">👉 The OS/router calculates it</span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h2><span class="s1">2. ✅ Static routes (you add them)</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">You can manually say:</span></p>
+
+
+<pre><code>“To reach 10.0.0.0/8 → go through this gateway”</code></pre>
+
+
+<p class="p1"><span class="s1">👉 Then the routing table will contain:</span></p>
+
+
+<pre><code>Destination: 10.0.0.0/8</code></pre>
+
+
+<p class="p1"><span class="s1">💡 Here, </span><span class="s2">you define the destination</span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h2><span class="s1">3. ✅ Default route</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">You often configure:</span></p>
+
+
+<pre><code>Gateway: 192.168.1.1</code></pre>
+
+
+<p class="p1"><span class="s1">👉 This creates:</span></p>
+
+
+<pre><code>Destination: 0.0.0.0/0</code></pre>
+
+
+<p class="p1"><span class="s1">💡 Meaning: “everything else”</span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h1><span class="s1">🔹 Important mental model</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Think like this:</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 A routing table is just:</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<blockquote style="margin: 0.0px 0.0px 0.0px 15.0px; font: 21.0px '.AppleSystemUIFont'; color: #111111"><span class="s1">“For this NETWORK (destination), send packets THIS WAY”</span></blockquote>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h1><span class="s1">🔹 Example (NetPractice style)</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">If a machine has:</span></p>
+
+
+<pre><code>IP: 192.168.1.10
+Mask: 255.255.255.0
+Gateway: 192.168.1.1</code></pre>
+
+
+<p class="p1"><span class="s1">It will automatically have:</span></p>
+
+
+<pre><code>192.168.1.0/24 → direct (interface)
+0.0.0.0/0      → 192.168.1.1</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h1><span class="s1">🔹 Now I guide you (important exercise)</span></h1></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Imagine:</span></p>
+
+
+<pre><code>IP:   10.5.23.7
+Mask: 255.255.0.0</code></pre>
+
+
+<p class="p1"><span class="s1">👉 Without jumping:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">What network is this machine in?</span></p>
+</li><li>
+<p class="p1"><span class="s1">What destination will be added automatically?</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p1"><span class="s1">If you answer that correctly, you’ve basically understood </span><span class="s3">half of routing tables</span><span class="s1"> — which is exactly what NetPractice expects.</span></p>
+
+</body>
+</html>

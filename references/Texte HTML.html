@@ -1,0 +1,240 @@
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<p class="p1"><span class="s1">Alright, let’s go </span><span class="s2">slow, clean, and step by step</span><span class="s1">, like debugging a C program line by line.</span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h1><span class="s1">🧠 First: What is this setup?</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">You have </span><span class="s2">3 main parts</span><span class="s1">:</span></p>
+
+
+<pre><code>Host A  →  Switch  →  Router R  →  Internet</code></pre>
+
+
+<p class="p1"><span class="s1">And the router has </span><span class="s2">2 interfaces</span><span class="s1">:</span></p>
+<p class="p2"><span class="s3"><ul><li>
+<p class="p1"><span class="s1">R1</span><span class="s2"> → internal network (toward your host)</span></p>
+</li><li>
+<p class="p1"><span class="s1">R2</span><span class="s2"> → external network (toward the internet)</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h1><span class="s1">🔍 Step 1: Understand each network separately</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s3"><h2><span class="s1">🖥️ Host side (right side)</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s3"><h3><span class="s1">Interface A1:</span></h3></span></p>
+<p class="p2"><span class="s3"><ul><li>
+<p class="p1"><span class="s1">IP: </span><span class="s2">21.73.140.227</span></p>
+</li><li>
+<p class="p1"><span class="s1">Mask: </span><span class="s2">255.255.255.0</span><span class="s1"> → </span><span class="s2">/24</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 This means:</span></p>
+
+
+<pre><code>Network = 21.73.140.0
+Range   = 21.73.140.1 → 21.73.140.254</code></pre>
+
+
+<p class="p1"><span class="s1">✔️ So:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Host A is in </span><span class="s2">21.73.140.0/24</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h2><span class="s1">🔌 Router interface R1 (connected to host)</span></h2></span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">IP: </span><span class="s2">21.73.140.254</span></p>
+</li><li>
+<p class="p1"><span class="s1">Mask: </span><span class="s2">255.255.255.128</span><span class="s1"> → </span><span class="s2">/25</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 This is different from the host!</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Let’s compute it:</span></p>
+
+
+<pre><code>/25 = 255.255.255.128
+Block size = 128</code></pre>
+
+
+<p class="p1"><span class="s1">So networks are:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">21.73.140.0 → 21.73.140.127</span></p>
+</li><li>
+<p class="p1"><span class="s1">21.73.140.128 → 21.73.140.255</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Now check:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Host: </span><span class="s2">21.73.140.227</span><span class="s1"> → belongs to </span><span class="s3">second subnet</span></p>
+</li><li>
+<p class="p1"><span class="s1">Router R1: </span><span class="s2">21.73.140.254</span><span class="s1"> → also </span><span class="s3">second subnet</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">✔️ Good: they are in the </span><span class="s3">same subnet</span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h1><span class="s1">🔥 Step 2: Where is the mistake?</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Look carefully:</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s2"><h3><span class="s1">Host A route:</span></h3></span></p>
+
+
+<pre><code>0.0.0.0/0 → 21.73.140.1</code></pre>
+
+
+<p class="p1"><span class="s1">👉 This means:</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<blockquote style="margin: 0.0px 0.0px 0.0px 15.0px; font: 21.0px '.AppleSystemUIFont'; color: #111111"><span class="s1">“If I don’t know where to go, send to 21.73.140.1”</span></blockquote>
+<p class="p4"><span class="s2"><hr></span></p>
+<p class="p4"><span class="s2"><h2><span class="s1">🚨 Problem:</span></h2></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Is </span><span class="s3">21.73.140.1</span><span class="s1"> your router?</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 NO.</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Your router is:</span></p>
+
+
+<pre><code>21.73.140.254</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h2><span class="s1">💥 Result:</span></h2></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Host sends packets to:</span></p>
+
+
+<pre><code>21.73.140.1 ❌ (wrong device / doesn&#39;t exist)</code></pre>
+
+
+<p class="p1"><span class="s1">So packets are </span><span class="s2">lost immediately</span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h1><span class="s1">🧠 Step 3: Router → Internet side</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s3"><h3><span class="s1">Interface R2:</span></h3></span></p>
+<p class="p2"><span class="s3"><ul><li>
+<p class="p1"><span class="s1">IP: </span><span class="s2">163.172.250.12</span></p>
+</li><li>
+<p class="p1"><span class="s1">Mask: </span><span class="s2">255.255.255.240</span><span class="s1"> → </span><span class="s2">/28</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Range:</span></p>
+
+
+<pre><code>163.172.250.0 → 163.172.250.15</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">Internet route:</span></h3></span></p>
+
+
+<pre><code>21.73.140.0/31 → 163.172.250.12</code></pre>
+
+
+<p class="p1"><span class="s1">👉 This is </span><span class="s2">very suspicious</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Why?</span></p>
+<p class="p3"><span class="s3"><ul><li>
+<p class="p1"><span class="s1">/31</span><span class="s2"> = only 2 IPs</span></p>
+</li><li>
+<p class="p1"><span class="s1">But your real network is </span><span class="s2">/24</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 So the internet only knows </span><span class="s2">2 IPs</span><span class="s1">, not your whole network</span></p>
+<p class="p3"><span class="s3"><hr></span></p>
+<p class="p3"><span class="s3"><h1><span class="s1">⚠️ So there are TWO problems</span></h1></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p3"><span class="s3"><h2><span class="s1">❌ Problem 1 (MAIN one):</span></h2></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Wrong default gateway on Host A</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 It should be:</span></p>
+
+
+<pre><code>0.0.0.0/0 → 21.73.140.254</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h2><span class="s1">❌ Problem 2:</span></h2></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Internet route is too small</span></p>
+
+
+<pre><code>21.73.140.0/31 ❌</code></pre>
+
+
+<p class="p1"><span class="s1">👉 It should cover the whole network:</span></p>
+
+
+<pre><code>21.73.140.0/24 ✅</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h1><span class="s1">🧪 Step 4: Think like packet flow (very important)</span></h1></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p1"><span class="s1"><h2><span class="s1">Forward path:</span></h2></span></p>
+
+
+<pre><code>Host A → Router → Internet</code></pre>
+
+
+<p class="p1"><span class="s1">Fails at:</span></p>
+<p class="p1"><span class="s1">👉 Host sends to WRONG gateway</span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h2><span class="s1">Reverse path:</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Even if forward worked:</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Internet only knows:</span></p>
+
+
+<pre><code>21.73.140.0/31</code></pre>
+
+
+<p class="p1"><span class="s1">👉 So reply may never come back correctly</span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h1><span class="s1">🧩 Final mental model (VERY important)</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Think like this in every NetPractice exercise:</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s2"><h3><span class="s1">1. Same network?</span></h3></span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Compare IP + mask</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s2"><h3><span class="s1">2. If NOT same:</span></h3></span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Must use </span><span class="s2">gateway</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s2"><h3><span class="s1">3. Gateway must be:</span></h3></span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Router interface in SAME subnet</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s2"><h3><span class="s1">4. Routes must:</span></h3></span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Cover the correct network size</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h1><span class="s1">💡 Small challenge for you</span></h1></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Before I tell you everything:</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Try to answer:</span></p>
+<p class="p2"><span class="s2"><ol start="1"><li>
+<p class="p1"><span class="s1">Why is </span><span class="s2">21.73.140.1</span><span class="s1"> invalid as a gateway here?</span></p>
+</li><li>
+<p class="p1"><span class="s1">What is the </span><span class="s2">correct default route</span><span class="s1">?</span></p>
+</li><li>
+<p class="p1"><span class="s1">Why </span><span class="s2">/31</span><span class="s1"> is wrong for the internet route?</span></p>
+</li></ol></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Take your time — this is exactly how you build real networking intuition 🚀</span></p>
+
+</body>
+</html>

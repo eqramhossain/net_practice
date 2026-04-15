@@ -1,154 +1,198 @@
-Let’s decode what this IP address + subnet mask combination really means step-by-step.
-
-You have:
-	•	IP address: 198.168.85.222
-	•	Subnet mask: 255.255.255.224
-
-The subnet mask tells us how the network is divided.
+Alright, let’s go slow, clean, and step by step, like debugging a C program line by line.
 
 ⸻
 
-1️⃣ Convert the subnet mask to binary
+🧠 First: What is this setup?
 
-Subnet masks are easier to understand in binary.
+You have 3 main parts:
 
-255 = 11111111
-255 = 11111111
-255 = 11111111
-224 = 11100000
+Host A  →  Switch  →  Router R  →  Internet
 
-So the mask becomes:
-
-11111111.11111111.11111111.11100000
-
-Now count the 1 bits:
-
-8 + 8 + 8 + 3 = 27
-
-So this mask is:
-
-/27
-
-Meaning:
-	•	27 bits = network
-	•	5 bits = hosts
+And the router has 2 interfaces:
+	•	R1 → internal network (toward your host)
+	•	R2 → external network (toward the internet)
 
 ⸻
 
-2️⃣ How many IP addresses in this subnet?
+🔍 Step 1: Understand each network separately
 
-The host part has 5 bits.
+🖥️ Host side (right side)
 
-Number of possible combinations:
+Interface A1:
+	•	IP: 21.73.140.227
+	•	Mask: 255.255.255.0 → /24
 
-2^5 = 32 addresses
+👉 This means:
 
-So each subnet has 32 addresses.
+Network = 21.73.140.0
+Range   = 21.73.140.1 → 21.73.140.254
 
-But remember:
-	•	1 address = network address
-	•	1 address = broadcast
-
-So usable addresses:
-
-32 - 2 = 30 usable hosts
-
+✔️ So:
+	•	Host A is in 21.73.140.0/24
 
 ⸻
 
-3️⃣ Find the subnet blocks
+🔌 Router interface R1 (connected to host)
+	•	IP: 21.73.140.254
+	•	Mask: 255.255.255.128 → /25
 
-Since each subnet has 32 addresses, the last octet increases by 32.
+👉 This is different from the host!
 
-The ranges will be:
+Let’s compute it:
 
-0 – 31
-32 – 63
-64 – 95
-96 – 127
-128 – 159
-160 – 191
-192 – 223
-224 – 255
+/25 = 255.255.255.128
+Block size = 128
 
-Each one is a different subnet.
+So networks are:
+	•	21.73.140.0 → 21.73.140.127
+	•	21.73.140.128 → 21.73.140.255
+
+👉 Now check:
+	•	Host: 21.73.140.227 → belongs to second subnet
+	•	Router R1: 21.73.140.254 → also second subnet
+
+✔️ Good: they are in the same subnet
 
 ⸻
 
-4️⃣ Which subnet does your IP belong to?
+🔥 Step 2: Where is the mistake?
 
-Your IP:
+Look carefully:
 
-198.168.85.222
+Host A route:
 
-Look at the last octet:
+0.0.0.0/0 → 21.73.140.1
 
-222
+👉 This means:
 
-Find the range containing 222:
+“If I don’t know where to go, send to 21.73.140.1”
 
-192 – 223
+⸻
 
-So the subnet is:
+🚨 Problem:
 
-198.168.85.192/27
+Is 21.73.140.1 your router?
+
+👉 NO.
+
+Your router is:
+
+21.73.140.254
 
 
 ⸻
 
-5️⃣ Important addresses in this subnet
+💥 Result:
 
-Subnet range:
+Host sends packets to:
 
-198.168.85.192 – 198.168.85.223
+21.73.140.1 ❌ (wrong device / doesn't exist)
 
-Type	Address
-Network	198.168.85.192
-First usable	198.168.85.193
-Last usable	198.168.85.222
-Broadcast	198.168.85.223
-
-Your IP:
-
-198.168.85.222
-
-This is the last usable host in this subnet.
+So packets are lost immediately
 
 ⸻
 
-6️⃣ Why 224 creates blocks of 32
+🧠 Step 3: Router → Internet side
 
-Look at the last octet mask:
+Interface R2:
+	•	IP: 163.172.250.12
+	•	Mask: 255.255.255.240 → /28
 
-224 = 11100000
+👉 Range:
 
-Host bits:
-
-00011111
-
-Binary value:
-
-00011111 = 31
-
-Add the network bit:
-
-31 + 1 = 32
-
-So the subnet size becomes 32 addresses per subnet.
-
-⸻
-
-✅ Summary
-
-IP:            198.168.85.222
-Subnet mask:   255.255.255.224
-CIDR:          /27
-Subnet:        198.168.85.192
-Broadcast:     198.168.85.223
-Usable range:  198.168.85.193 – 198.168.85.222
-Hosts:         30
+163.172.250.0 → 163.172.250.15
 
 
 ⸻
 
-If you’re doing network exercises like in NetPractice at 42, I can also show you a super fast mental trick to find the subnet in 5 seconds without binary. It makes these questions extremely easy.
+Internet route:
+
+21.73.140.0/31 → 163.172.250.12
+
+👉 This is very suspicious
+
+Why?
+	•	/31 = only 2 IPs
+	•	But your real network is /24
+
+👉 So the internet only knows 2 IPs, not your whole network
+
+⸻
+
+⚠️ So there are TWO problems
+
+❌ Problem 1 (MAIN one):
+
+Wrong default gateway on Host A
+
+👉 It should be:
+
+0.0.0.0/0 → 21.73.140.254
+
+
+⸻
+
+❌ Problem 2:
+
+Internet route is too small
+
+21.73.140.0/31 ❌
+
+👉 It should cover the whole network:
+
+21.73.140.0/24 ✅
+
+
+⸻
+
+🧪 Step 4: Think like packet flow (very important)
+
+Forward path:
+
+Host A → Router → Internet
+
+Fails at:
+👉 Host sends to WRONG gateway
+
+⸻
+
+Reverse path:
+
+Even if forward worked:
+
+Internet only knows:
+
+21.73.140.0/31
+
+👉 So reply may never come back correctly
+
+⸻
+
+🧩 Final mental model (VERY important)
+
+Think like this in every NetPractice exercise:
+
+1. Same network?
+	•	Compare IP + mask
+
+2. If NOT same:
+	•	Must use gateway
+
+3. Gateway must be:
+	•	Router interface in SAME subnet
+
+4. Routes must:
+	•	Cover the correct network size
+
+⸻
+
+💡 Small challenge for you
+
+Before I tell you everything:
+
+👉 Try to answer:
+	1.	Why is 21.73.140.1 invalid as a gateway here?
+	2.	What is the correct default route?
+	3.	Why /31 is wrong for the internet route?
+
+Take your time — this is exactly how you build real networking intuition 🚀

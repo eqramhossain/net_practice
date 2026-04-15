@@ -1,0 +1,257 @@
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<p class="p1"><span class="s1">Alright — let’s treat </span><span class="s2">Level 7 of NetPractice</span><span class="s1"> like a real networking lab and break it down step by step, slowly and clearly.</span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h2><span class="s1">🧠 First: What Level 7 is testing</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">At this level, you’re no longer just assigning IPs. You’re expected to </span><span class="s2">understand routing logic deeply</span><span class="s1">:</span></p>
+<p class="p2"><span class="s3"><ul><li>
+<p class="p1"><span class="s1">Multiple routers involved</span></p>
+</li><li>
+<p class="p1"><span class="s1">Several subnets</span></p>
+</li><li>
+<p class="p1"><span class="s1">Correct </span><span class="s2">routing tables</span><span class="s1"> required</span></p>
+</li><li>
+<p class="p1"><span class="s1">Proper use of </span><span class="s2">default routes vs specific routes</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 In short: </span><span class="s4">“How does a packet know where to go across multiple networks?”</span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h2><span class="s1">🧩 The core idea (VERY important)</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">A machine (host or router) follows this logic when sending a packet:</span></p>
+<p class="p2"><span class="s3"><ol start="1"><li>
+<p class="p1"><span class="s1">Is the destination in my subnet?</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">YES → send directly</span></p>
+</li><li>
+<p class="p1"><span class="s1">NO → send to a router (gateway)</span></p>
+</li></ul></span></p>
+</li><li>
+<p class="p1"><span class="s1">Router receives the packet:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Checks its </span><span class="s2">routing table</span></p>
+</li><li>
+<p class="p1"><span class="s1">Chooses the </span><span class="s2">best matching route</span></p>
+</li><li>
+<p class="p1"><span class="s1">Forwards the packet to the next hop</span></p>
+</li></ul></span></p>
+</li></ol></span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h2><span class="s1">🔥 The difficulty in Level 7</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">You usually get something like:</span></p>
+
+
+<pre><code>Host A ── Router R1 ── Router R2 ── Host B</code></pre>
+
+
+<p class="p1"><span class="s1">But with:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Different subnet masks</span></p>
+</li><li>
+<p class="p1"><span class="s1">Missing routes</span></p>
+</li><li>
+<p class="p1"><span class="s1">Possibly wrong configurations</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Your job is to:</span></p>
+<p class="p2"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Fix IPs / masks</span></p>
+</li><li>
+<p class="p1"><span class="s1">Complete routing tables</span></p>
+</li><li>
+<p class="p1"><span class="s1">Ensure </span><span class="s2">A can reach B AND B can reach A</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h2><span class="s1">⚠️ The most common mistake</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">People only fix the </span><span class="s3">forward path</span><span class="s1">:</span></p>
+
+
+<pre><code>A → B ✅ works</code></pre>
+
+
+<p class="p1"><span class="s1">But forget the </span><span class="s2">return path</span><span class="s1">:</span></p>
+
+
+<pre><code>B → A ❌ fails</code></pre>
+
+
+<p class="p1"><span class="s1">👉 Networking ALWAYS requires </span><span class="s2">bidirectional connectivity</span></p>
+<p class="p2"><span class="s3"><hr></span></p>
+<p class="p2"><span class="s3"><h2><span class="s1">🛠️ Step-by-step method to solve Level 7</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s3"><h3><span class="s1">1. Identify each subnet</span></h3></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">For every interface:</span></p>
+<p class="p2"><span class="s3"><ul><li>
+<p class="p1"><span class="s1">Apply mask</span></p>
+</li><li>
+<p class="p1"><span class="s1">Compute </span><span class="s2">network address</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Example:</span></p>
+
+
+<pre><code>IP: 192.168.1.10
+Mask: 255.255.255.0
+
+→ Network: 192.168.1.0/24</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">2. Group interfaces in the same subnet</span></h3></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">If two interfaces:</span></p>
+<p class="p1"><span class="s1"><ul><li>
+<p class="p1"><span class="s1">Have the </span><span class="s2">same network address</span></p>
+<p class="p1"><span class="s1">👉 They are directly connected</span></p>
+</li></ul></span></p>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">3. Check each device</span></h3></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p1"><span class="s1"><h4><span class="s1">🖥 Host:</span></h4></span></p>
+<p class="p3"><span class="s2">Needs:</span></p>
+<p class="p1"><span class="s1"><ul><li>
+<p class="p1"><span class="s1">IP</span></p>
+</li><li>
+<p class="p1"><span class="s1">Mask</span></p>
+</li><li>
+<p class="p1"><span class="s1">Default gateway</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">👉 Ask yourself:</span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<blockquote style="margin: 0.0px 0.0px 0.0px 15.0px; font: 21.0px '.AppleSystemUIFont'; color: #111111"><span class="s2">“If I send to another network, where do I send the packet?”</span></blockquote>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Answer = </span><span class="s3">router interface</span></p>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h4><span class="s1">📡 Router:</span></h4></span></p>
+<p class="p3"><span class="s2">Needs:</span></p>
+<p class="p1"><span class="s1"><ul><li>
+<p class="p1"><span class="s1">IP on each interface</span></p>
+</li><li>
+<p class="p1"><span class="s1">Routing table entries</span></p>
+</li></ul></span></p>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">4. Build routing tables (THIS IS KEY)</span></h3></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Each router must know:</span></p>
+<p class="p1"><span class="s1"><ul><li>
+<p class="p1"><span class="s1">Directly connected networks → automatic</span></p>
+</li><li>
+<p class="p1"><span class="s1">Remote networks → must add routes</span></p>
+</li></ul></span></p>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">💡 How to think like a router</span></h3></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Ask:</span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<blockquote style="margin: 0.0px 0.0px 0.0px 15.0px; font: 21.0px '.AppleSystemUIFont'; color: #111111"><span class="s2">“If I receive a packet for network X… where do I send it?”</span></blockquote>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h2><span class="s1">🧪 Example reasoning (simplified)</span></h2></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Let’s say:</span></p>
+<p class="p1"><span class="s1"><ul><li>
+<p class="p1"><span class="s1">A → network </span><span class="s2">10.0.0.0/24</span></p>
+</li><li>
+<p class="p1"><span class="s1">B → network </span><span class="s2">20.0.0.0/24</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Router in between:</span></p>
+<p class="p1"><span class="s1"><ul><li>
+<p class="p1"><span class="s1">Interface 1: </span><span class="s2">10.0.0.1</span></p>
+</li><li>
+<p class="p1"><span class="s1">Interface 2: </span><span class="s2">20.0.0.1</span></p>
+</li></ul></span></p>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">On Host A:</span></h3></span></p>
+
+
+<pre><code>Default gateway → 10.0.0.1</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">On Router:</span></h3></span></p>
+<p class="p2"><span class="s2"></span><br></p>
+<p class="p3"><span class="s2">Already knows:</span></p>
+
+
+<pre><code>10.0.0.0/24 → directly connected
+20.0.0.0/24 → directly connected</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h3><span class="s1">On Host B:</span></h3></span></p>
+
+
+<pre><code>Default gateway → 20.0.0.1</code></pre>
+
+
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p2"><span class="s2">✔ Now communication works BOTH ways</span></p>
+<p class="p1"><span class="s1"><hr></span></p>
+<p class="p1"><span class="s1"><h2><span class="s1">⚠️ In Level 7, routers are chained</span></h2></span></p>
+<p class="p3"><span class="s2"></span><br></p>
+<p class="p2"><span class="s2">So you must think like:</span></p>
+
+
+<pre><code>A → R1 → R2 → B</code></pre>
+
+
+<p class="p1"><span class="s1">So:</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p3"><span class="s2"><h3><span class="s1">On R1:</span></h3></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Needs route to B’s network via R2</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p3"><span class="s2"><h3><span class="s1">On R2:</span></h3></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Needs route to A’s network via R1</span></p>
+<p class="p3"><span class="s2"><hr></span></p>
+<p class="p3"><span class="s2"><h2><span class="s1">🧠 Golden rule</span></h2></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Every router must know how to reach:</span></p>
+<p class="p3"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">All </span><span class="s2">remote networks</span></p>
+</li></ul></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Every host must know:</span></p>
+<p class="p3"><span class="s2"><ul><li>
+<p class="p1"><span class="s1">Where to send </span><span class="s2">outside traffic</span></p>
+</li></ul></span></p>
+<p class="p3"><span class="s2"><hr></span></p>
+<p class="p3"><span class="s2"><h2><span class="s1">🚨 Debug strategy (VERY IMPORTANT)</span></h2></span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">When it fails, simulate mentally:</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p3"><span class="s2"><h3><span class="s1">Forward:</span></h3></span></p>
+
+
+<pre><code>A → ? → ? → B</code></pre>
+
+
+<p class="p1"><span class="s1"><h3><span class="s1">Reverse:</span></h3></span></p>
+
+
+<pre><code>B → ? → ? → A</code></pre>
+
+
+<p class="p1"><span class="s1">👉 Find where it breaks</span></p>
+<p class="p2"><span class="s2"><hr></span></p>
+<p class="p2"><span class="s2"><h2><span class="s1">🎯 Now — your turn</span></h2></span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">To help you properly (like NetPractice expects), I need the </span><span class="s3">exact Level 7 diagram or values</span><span class="s1">.</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">👉 Send a screenshot of your Level 7</span></p>
+<p class="p1"><span class="s1">(or copy all IPs / masks / routes)</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Then I’ll guide you step-by-step — </span><span class="s3">without jumping to the answer</span><span class="s1">, just like a real instructor.</span></p>
+
+</body>
+</html>
