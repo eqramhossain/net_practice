@@ -1,5 +1,36 @@
 # *This project has been created as part of the 42 curriculum by ehossain*
 
+## Description
+This is the first project in 42 curriculum that introduce us to the basics fundamental of networking. You will learn how to configure IP addresses, connect devices
+through a router, and understand the role of a gateway within a network.
+
+In simple terms, it puts you in front of small network scenarios (hosts, switches, routers) where things are intentionally broken, and your job is to fix them by correctly setting:
+
+IP addresses
+Subnet masks
+Routing tables
+Default gateways
+
+Instead of memorizing theory, you learn by debugging connectivity: “Why can’t this machine reach that one?” and then systematically solving it.
+
+The goal is to build a solid intuition for:
+
+How packets move through a network
+How routers decide where to send data
+How addressing and subnetting define communication boundaries
+
+## Instructions
+Firstly download the project from intra. Extract it and you will find a executable program called `run.sh`.
+Check if you have permission to run `run.sh` else do `chmod +x run.sh`
+run the program and it will open a tab in your default browser(Chrome-based browser is prefered).
+
+### How to export configurations??
+Once you have validate a level you will find a button in the header section called `get my config`. You can get your `.json` file by downloading. 
+
+### Submission requirements
+If you have finished all the levels you will have 10 `.json` file 
+Plase all the 10 exported configuration files `.json` (one per level).
+They must be placed at the repository root.
 
 ## What is a Network and Networking ?
 A Network is a collection of interconnected devices (such as computer, servers, smartphones, printers etc.) via cables (ethernet cables) or wireless signals (wi-fi). Networking referes to the practice of connecting multiple devices so that they can communicate with each other and share resources such as files, data, documents etc. A network can be as small as two devices connected directly or as large as the global internet. Devices withing a network communicate using Protocols, which are set of rules that defines how data is transmitted and received between devices on a network, allowing them to communicate effectively. It ensures that the devices can exchange the resources and information regradless of their different hardware or software.
@@ -104,9 +135,16 @@ and my broadcast address will be `192.172.250.255`
 
 ---
 ## References
-All the files inside References folder and some links are provided below.
+All the files inside `./References` folder and some links are provided below.
 
 1. [Introduction to Subnetting](https://www.geeksforgeeks.org/computer-networks/introduction-to-subnetting/)
 2. [Introduction to basic networking](https://medium.com/infosecmatrix/what-is-networking-an-introduction-to-basic-networking-concepts-42fdb9c02a20)
 3. [Introduction to Ip-addressing and Subnetting](https://www.techtarget.com/searchnetworking/tip/Introduction-to-IP-addressing-and-subnetting)
-4. [Free CCNA 200-301 youtube](https://www.youtube.com/playlist?list=PLIhvC56v63IJVXv0GJcl9vO5Z6znCVb1P)
+4. [Free CCNA 200-301 NetworkChuck](https://www.youtube.com/playlist?list=PLIhvC56v63IJVXv0GJcl9vO5Z6znCVb1P)
+5. [What is a Default gateway](https://www.cbtnuggets.com/blog/technology/networking/what-is-default-gateway)
+6. [What is a router/cisco?](https://www.cisco.com/site/us/en/learn/topics/small-business/what-is-a-router.html)
+7. [What is a router/cloudflare?](https://www.cloudflare.com/learning/network-layer/what-is-a-router/)
+8. [What is a network switch? | Switch vs. router](https://www.cloudflare.com/learning/network-layer/what-is-a-network-switch/)
+9. [What is the OSI Model?](https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/)
+10. [What is the Internet Protocol?](https://www.cloudflare.com/learning/network-layer/internet-protocol/)
+11. [TCP/IP: What It Is & How It Works](https://www.splunk.com/en_us/blog/learn/tcp-ip.html)
