@@ -1,3 +1,6 @@
+# *This project has been created as part of the 42 curriculum by ehossain*
+
+
 ## What is a Network and Networking ?
 A Network is a collection of interconnected devices (such as computer, servers, smartphones, printers etc.) via cables (ethernet cables) or wireless signals (wi-fi). Networking referes to the practice of connecting multiple devices so that they can communicate with each other and share resources such as files, data, documents etc. A network can be as small as two devices connected directly or as large as the global internet. Devices withing a network communicate using Protocols, which are set of rules that defines how data is transmitted and received between devices on a network, allowing them to communicate effectively. It ensures that the devices can exchange the resources and information regradless of their different hardware or software.
 
@@ -100,9 +103,10 @@ and my broadcast address will be `192.172.250.255`
 
 
 ---
-# References
+## References
+All the files inside References folder and some links are provided below.
+
 1. [Introduction to Subnetting](https://www.geeksforgeeks.org/computer-networks/introduction-to-subnetting/)
 2. [Introduction to basic networking](https://medium.com/infosecmatrix/what-is-networking-an-introduction-to-basic-networking-concepts-42fdb9c02a20)
 3. [Introduction to Ip-addressing and Subnetting](https://www.techtarget.com/searchnetworking/tip/Introduction-to-IP-addressing-and-subnetting)
 4. [Free CCNA 200-301 youtube](https://www.youtube.com/playlist?list=PLIhvC56v63IJVXv0GJcl9vO5Z6znCVb1P)
-Fahim Abdullah
